@@ -1,0 +1,38 @@
+name: CHAT-E
+options:
+  bundleIdPrefix: com.multichat
+  deploymentTarget:
+    iOS: "12.0"
+  xcodeVersion: "16.4"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGN_IDENTITY: ""
+    CODE_SIGNING_ALLOWED: NO
+
+targets:
+  CHAT-E:
+    type: application
+    platform: iOS
+    sources:
+      - path: CHAT-E
+        excludes:
+          - "*.xcassets"
+          - "*.plist"
+          - "*.entitlements"
+      - path: CHAT-E/Resources/Assets.xcassets
+      - path: CHAT-E/CHAT-E.entitlements
+        buildPhase: none
+      - path: CHAT-E/Info.plist
+        buildPhase: none
+      - path: CHAT-E/Resources/Configuration.plist
+        buildPhase: none
+    settings:
+      base:
+        INFOPLIST_FILE: CHAT-E/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CHAT-E/CHAT-E.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: com.multichat.chate
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
