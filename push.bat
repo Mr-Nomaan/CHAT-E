@@ -1,9 +1,6 @@
 @echo off
-cd /d "%~dp0"
-git init
+cd /d E:\Tools\OPENCODE PROJECTS\AI
 git add .
-git commit -m "Initial commit - CHAT-E Multi-Agent Chatbot"
-git remote add origin https://github.com/Mr-Nomaan/CHAT-E.git
-git branch -M main
+git commit -m "Build for iOS simulator SDK"
 git push -u origin main
 pause
