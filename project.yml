@@ -4,6 +4,7 @@ options:
   deploymentTarget:
     iOS: "12.0"
   xcodeVersion: "16.4"
+  createIntermediateGroups: true
 
 settings:
   base:
@@ -19,20 +20,16 @@ targets:
     sources:
       - path: CHAT-E
         excludes:
-          - "*.xcassets"
-          - "*.plist"
-          - "*.entitlements"
-      - path: CHAT-E/Resources/Assets.xcassets
-      - path: CHAT-E/CHAT-E.entitlements
-        buildPhase: none
-      - path: CHAT-E/Info.plist
-        buildPhase: none
-      - path: CHAT-E/Resources/Configuration.plist
-        buildPhase: none
+          - "CHAT-E.entitlements"
+          - "Info.plist"
+    info:
+      path: CHAT-E/Info.plist
+    entitlements:
+      path: CHAT-E/CHAT-E.entitlements
     settings:
       base:
-        INFOPLIST_FILE: CHAT-E/Info.plist
-        CODE_SIGN_ENTITLEMENTS: CHAT-E/CHAT-E.entitlements
         PRODUCT_BUNDLE_IDENTIFIER: com.multichat.chate
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_FILE: CHAT-E/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CHAT-E/CHAT-E.entitlements
         GENERATE_INFOPLIST_FILE: NO

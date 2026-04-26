@@ -20,6 +20,12 @@ jobs:
     - name: Show Xcode version
       run: xcodebuild -version
       
+    - name: Show file structure
+      run: |
+        echo "=== File Structure ==="
+        find . -maxdepth 4 -not -path '*/.*'
+        echo "===================="
+        
     - name: Install XcodeGen
       run: brew install xcodegen
       
@@ -41,7 +47,6 @@ jobs:
         
         APP_PATH=$(find build -name "*.app" -type d | head -n 1)
         if [ -z "$APP_PATH" ]; then
-          # Try DerivedData
           APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "CHAT-E.app" -type d | head -n 1)
         fi
         
