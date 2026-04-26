@@ -25,16 +25,15 @@ jobs:
       
     - name: Build for iOS Simulator
       env:
-        CODE_SIGN_IDENTITY: ""
+        CODE_SIGN_IDENTITY: "-"
         CODE_SIGNING_REQUIRED: "NO"
-        CODE_SIGNING_ALLOWED: "NO"
       run: |
         xcodebuild -project CHAT-E.xcodeproj \
           -scheme CHAT-E \
           -configuration Debug \
-          -destination 'platform=iOS Simulator,OS=18.0' \
+          -destination 'generic/platform=iOS Simulator' \
           -derivedDataPath build \
-          build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          build CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY CODE_SIGNING_REQUIRED=$CODE_SIGNING_REQUIRED
         
     - name: Find built app
       run: |
