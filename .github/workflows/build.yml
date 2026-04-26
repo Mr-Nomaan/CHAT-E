@@ -22,20 +22,8 @@ jobs:
         xcodebuild -version
         xcodebuild -showsdks
         
-    - name: Build for iOS Device
+    - name: Build for iOS Simulator
       run: |
-        xcodebuild -project CHAT-E.xcodeproj \
-          -scheme CHAT-E \
-          -configuration Debug \
-          -sdk iphonesimulator \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO \
-          build-only
-            
-    - name: Create IPA
-      run: |
-        mkdir -p output
-        
-        # Build directory
         xcodebuild -project CHAT-E.xcodeproj \
           -scheme CHAT-E \
           -configuration Debug \
@@ -44,7 +32,10 @@ jobs:
           SYMROOT="$(pwd)/build" \
           build
         
-        # Find the app
+    - name: Create IPA
+      run: |
+        mkdir -p output
+        
         APP_PATH=$(find "$(pwd)/build" -name "CHAT-E.app" -type d | head -n 1)
         
         if [ -z "$APP_PATH" ]; then

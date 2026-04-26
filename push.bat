@@ -1,6 +1,6 @@
 @echo off
-cd /d E:\Tools\OPENCODE PROJECTS\AI
+cd "E:\Tools\OPENCODE PROJECTS\AI"
 git add .
-git commit -m "Build for iOS simulator SDK"
-git push -u origin main
+git commit -m "Fix build command"
+git push origin main
 pause
