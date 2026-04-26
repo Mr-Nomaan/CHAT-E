@@ -87,7 +87,7 @@
 			children = (
 				13BD2FAA2A5A24E3000F3AFE /* AppDelegate.swift */,
 			);
-			path = App;
+			path = CHAT-E/App;
 			sourceTree = "<group>";
 		};
 		13BD2FC42A5A24E3000F3AFE /* Models */ = {
@@ -98,7 +98,7 @@
 				13BD2FAD2A5A24E3000F3AFE /* APIRequest.swift */,
 				13BD2FAE2A5A24E3000F3AFE /* APIResponse.swift */,
 			);
-			path = Models;
+			path = CHAT-E/Models;
 			sourceTree = "<group>";
 		};
 		13BD2FC52A5A24E3000F3AFE /* Views */ = {
@@ -108,7 +108,7 @@
 				13BD2FB02A5A24E3000F3AFE /* ChatInputView.swift */,
 				13BD2FB12A5A24E3000F3AFE /* AgentSelectorView.swift */,
 			);
-			path = Views;
+			path = CHAT-E/Views;
 			sourceTree = "<group>";
 		};
 		13BD2FC62A5A24E3000F3AFE /* Controllers */ = {
@@ -116,7 +116,7 @@
 			children = (
 				13BD2FB22A5A24E3000F3AFE /* ChatViewController.swift */,
 			);
-			path = Controllers;
+			path = CHAT-E/Controllers;
 			sourceTree = "<group>";
 		};
 		13BD2FC72A5A24E3000F3AFE /* Network */ = {
@@ -126,7 +126,7 @@
 				13BD2FB42A5A24E3000F3AFE /* APIEndpoint.swift */,
 				13BD2FB52A5A24E3000F3AFE /* APIError.swift */,
 			);
-			path = Network;
+			path = CHAT-E/Network;
 			sourceTree = "<group>";
 		};
 		13BD2FC82A5A24E3000F3AFE /* Managers */ = {
@@ -136,7 +136,7 @@
 				13BD2FB72A5A24E3000F3AFE /* AgentRouter.swift */,
 				13BD2FB82A5A24E3000F3AFE /* Configuration.swift */,
 			);
-			path = Managers;
+			path = CHAT-E/Managers;
 			sourceTree = "<group>";
 		};
 		13BD2FC92A5A24E3000F3AFE /* Resources */ = {
@@ -145,7 +145,7 @@
 				13BD2FBC2A5A24E3000F3AFE /* Assets.xcassets */,
 				13BD2FBD2A5A24E3000F3AFE /* Configuration.plist */,
 			);
-			path = Resources;
+			path = CHAT-E/Resources;
 			sourceTree = "<group>";
 		};
 		13BD2FC22A5A24E3000F3AFE /* Products */ = {
@@ -380,7 +380,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.multichat.agentapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.multichat.chate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -411,7 +411,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.multichat.agentapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.multichat.chate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
