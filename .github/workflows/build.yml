@@ -20,40 +20,43 @@ jobs:
     - name: Show Xcode version
       run: xcodebuild -version
       
-    - name: List available simulators
-      run: xcrun simctl list devices available
+    - name: Show available SDKs
+      run: xcodebuild -showsdks
       
-    - name: Build for iOS Simulator
-      env:
-        CODE_SIGN_IDENTITY: "-"
-        CODE_SIGNING_REQUIRED: "NO"
+    - name: Build for generic iOS
       run: |
         xcodebuild -project CHAT-E.xcodeproj \
           -scheme CHAT-E \
           -configuration Debug \
-          -destination 'generic/platform=iOS Simulator' \
-          -derivedDataPath build \
-          build CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY CODE_SIGNING_REQUIRED=$CODE_SIGNING_REQUIRED
-        
+          -destination 'generic/platform=iOS' \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO \
+          build
+          
     - name: Find built app
       run: |
-        find build -name "*.app" -type d
-        APP_PATH=$(find build -name "CHAT-E.app" -type d | head -n 1)
-        echo "APP_PATH=$APP_PATH"
+        find . -name "*.app" -type d 2>/dev/null || true
         
     - name: Create IPA
       run: |
         mkdir -p output
-        APP_PATH=$(find build -name "CHAT-E.app" -type d | head -n 1)
-        if [ -z "$APP_PATH" ]; then
+        # Look in build directory or DerivedData
+        BUILD_DIR=$(find . -name "CHAT-E.app" -type d 2>/dev/null | head -n 1)
+        if [ -z "$BUILD_DIR" ]; then
+          # Try alternative locations
+          BUILD_DIR=$(find ~/Library/Developer/Xcode/DerivedData -name "CHAT-E.app" -type d 2>/dev/null | head -n 1)
+        fi
+        if [ -z "$BUILD_DIR" ]; then
           echo "ERROR: No built app found"
           exit 1
         fi
-        cd "$APP_PATH/.."
+        echo "Found app at: $BUILD_DIR"
+        mkdir -p output
+        cd "$BUILD_DIR/.."
         zip -r "../output/CHAT-E.ipa" CHAT-E.app -r
         ls -la output/
         
     - name: Upload IPA
+      if: success()
       uses: actions/upload-artifact@v4
       with:
         name: CHAT-E.ipa
