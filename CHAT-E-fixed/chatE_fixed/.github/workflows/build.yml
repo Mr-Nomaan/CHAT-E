@@ -1,0 +1,68 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 45
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+    - name: Show Xcode version
+      run: xcodebuild -version
+
+    - name: Install XcodeGen
+      run: brew install xcodegen
+
+    - name: Generate Xcode project
+      run: xcodegen generate
+
+    - name: Build for device (unsigned)
+      run: |
+        xcodebuild \
+          -project CHAT-E.xcodeproj \
+          -scheme CHAT-E \
+          -configuration Release \
+          -sdk iphoneos \
+          -arch arm64 \
+          -derivedDataPath ./build \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO \
+          build 2>&1 | tee build.log
+        tail -20 build.log
+
+    - name: Find .app bundle
+      id: find_app
+      run: |
+        APP_PATH=$(find ./build -name "*.app" -not -path "*/simulator/*" -type d | head -1)
+        echo "Found: $APP_PATH"
+        if [ -z "$APP_PATH" ]; then
+          echo "ERROR: No .app found"
+          find ./build -type d | head -40
+          exit 1
+        fi
+        echo "app_path=$APP_PATH" >> $GITHUB_OUTPUT
+
+    - name: Package IPA
+      run: |
+        mkdir -p ./output/Payload
+        cp -r "${{ steps.find_app.outputs.app_path }}" ./output/Payload/
+        cd ./output
+        zip -r CHAT-E.ipa Payload/
+        ls -lh CHAT-E.ipa
+
+    - name: Upload IPA
+      uses: actions/upload-artifact@v4
+      with:
+        name: CHAT-E-IPA
+        path: output/CHAT-E.ipa
+        retention-days: 14

@@ -22,8 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
             navigationController.navigationBar.standardAppearance = appearance
             navigationController.navigationBar.scrollEdgeAppearance = appearance
+        } else {
+            // iOS 12 compatible navigation bar styling
+            navigationController.navigationBar.isTranslucent = false
+            navigationController.navigationBar.barTintColor = .white
+            navigationController.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         }
-        navigationController.navigationBar.tintColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0) // iOS system blue
+        navigationController.navigationBar.tintColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)
         
         // Set root view controller
         self.window?.rootViewController = navigationController

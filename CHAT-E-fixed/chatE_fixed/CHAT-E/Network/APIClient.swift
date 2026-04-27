@@ -55,9 +55,11 @@ final class APIClient {
         sendRequest(to: .chatCompletions, apiKey: apiKey, body: request) { (result: Result<ChatCompletionResponse, APIError>) in
             switch result {
             case .success(let response):
-                // Extract text from the first choice's message content
-                let text = response.choices.first?.message.content ?? ""
-                completion(.success(text))
+                guard let content = response.choices.first?.message.content else {
+                    completion(.failure(.emptyResponse))
+                    return
+                }
+                completion(.success(content))
             case .failure(let error):
                 completion(.failure(error))
             }

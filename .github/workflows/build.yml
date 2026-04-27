@@ -17,19 +17,23 @@ jobs:
       env:
         FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       
-    - name: Show version
-      run: xcodebuild -version
+    - name: Show Xcode version
+      run: |
+        xcodebuild -version
+        xcode-select -p
+      
+    - name: Clean old artifacts
+      run: rm -rf build CHAT-E.xcodeproj DerivedData
         
-    - name: Clean
-      run: rm -rf build CHAT-E.xcodeproj
-       
     - name: Install XcodeGen
       run: brew install xcodegen
       
-    - name: Generate
-      run: xcodegen generate
-      
-    - name: Build
+    - name: Generate Xcode project
+      run: |
+        xcodegen generate
+        ls -la
+        
+    - name: Build with verbose output
       run: |
         xcodebuild -project CHAT-E.xcodeproj \
           -target CHAT-E \
@@ -37,30 +41,42 @@ jobs:
           -sdk iphonesimulator \
           -derivedDataPath ./build \
           CODE_SIGN_IDENTITY="-" CODE_SIGNING_ALLOWED=NO \
-          build 2>&1 | tee build.log
-        tail -30 build.log
+          build 2>&1
         
-    - name: List Build Output
+    - name: Show build folder
       run: |
-        echo "=== Build folder ==="
-        ls -laR ./build/
+        echo "=== Build folder structure ==="
+        find ./build -type f -name "*.app" 2>/dev/null
+        find ./build -type f -name "*.ipa" 2>/dev/null
+        echo "=== Listing Products ==="
+        ls -laR ./build/ 2>/dev/null | head -100
         
     - name: Create IPA
       run: |
         mkdir -p output
         
-        # Find .app in build folder
-        APP_PATH=$(find ./build -name "*.app" -type d | head -1)
+        # Try multiple possible locations
+        APP_PATH=""
+        for path in ./build/Build/Products/Debug-iphonesimulator/CHAT-E.app \
+                   ./build/Build/Products/*/CHAT-E.app \
+                   ./build/**/*.app; do
+          if [ -e "$path" ]; then
+            APP_PATH="$path"
+            break
+          fi
+        done
         
-        echo "Found: $APP_PATH"
+        echo "APP_PATH: $APP_PATH"
         
-        if [ -z "$APP_PATH" ]; then
-          echo "ERROR: No .app found in build folder!"
+        if [ -z "$APP_PATH" ] || [ ! -e "$APP_PATH" ]; then
+          echo "ERROR: App not found in any expected location!"
+          find ./build -name "*.app" -o -name "*CHAT-E*" 2>/dev/null
           exit 1
         fi
         
         cd "$(dirname "$APP_PATH")"
         zip -r "$OLDPWD/output/CHAT-E.ipa" "$(basename "$APP_PATH")"
+        
         ls -la ./output/
 
     - uses: actions/upload-artifact@v4

@@ -48,11 +48,15 @@ final class ChatViewController: UIViewController {
     
     /// Loading indicator
     private let loadingIndicator: UIActivityIndicatorView = {
+        let style: UIActivityIndicatorView.Style
         if #available(iOS 13.0, *) {
-            return UIActivityIndicatorView(style: .medium)
+            style = .medium
         } else {
-            return UIActivityIndicatorView(style: .gray)
+            style = .gray
         }
+        let indicator = UIActivityIndicatorView(style: style)
+        indicator.hidesWhenStopped = true
+        return indicator
     }()
     
     /// Empty state label
