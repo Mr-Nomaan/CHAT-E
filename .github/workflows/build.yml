@@ -35,31 +35,32 @@ jobs:
           -target CHAT-E \
           -configuration Debug \
           -sdk iphonesimulator \
+          -derivedDataPath ./build \
           CODE_SIGN_IDENTITY="-" CODE_SIGNING_ALLOWED=NO \
           build 2>&1 | tee build.log
-        tail -20 build.log
+        tail -30 build.log
         
-    - name: Find Built App
+    - name: List Build Output
       run: |
-        echo "=== Searching for CHAT-E.app ==="
-        find ~/Library/Developer/Xcode/DerivedData -name "CHAT-E.app" -type d
+        echo "=== Build folder ==="
+        ls -laR ./build/
         
     - name: Create IPA
       run: |
         mkdir -p output
         
-        APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "CHAT-E.app" -type d | head -1)
+        # Find .app in build folder
+        APP_PATH=$(find ./build -name "*.app" -type d | head -1)
+        
+        echo "Found: $APP_PATH"
         
         if [ -z "$APP_PATH" ]; then
-          echo "ERROR: CHAT-E.app not found!"
-          ls -la ~/Library/Developer/Xcode/DerivedData/
+          echo "ERROR: No .app found in build folder!"
           exit 1
         fi
         
-        echo "Found app at: $APP_PATH"
         cd "$(dirname "$APP_PATH")"
         zip -r "$OLDPWD/output/CHAT-E.ipa" "$(basename "$APP_PATH")"
-        
         ls -la ./output/
 
     - uses: actions/upload-artifact@v4
