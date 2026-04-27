@@ -1,6 +1,6 @@
 @echo off
-cd "E:\Tools\OPENCODE PROJECTS\AI"
-git add .
-git commit -m "Use XcodeGen to generate project"
+cd /d E:\Tools\OPENCODE PROJECTS\AI
+git add .github/workflows/build.yml
+git commit -m "Clean build workflow"
 git push origin main
 pause
